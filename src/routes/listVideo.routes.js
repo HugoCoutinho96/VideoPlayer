@@ -6,5 +6,6 @@ const listVideoController = new ListVideoController()
 
 router.get("/", listVideoController.index)
 router.get("/:id", listVideoController.show)
+router.post("/", listVideoController.create)
 
 module.exports = router

@@ -4,5 +4,7 @@ const router = Router()
 const listVideoRoutes = require("./listVideo.routes")
 const usersRoutes = require("./users.routes")
 
-router.use("/", listVideoRoutes)
+router.use("/listvideo", listVideoRoutes)
 router.use("/register", usersRoutes)
+
+module.exports = router
