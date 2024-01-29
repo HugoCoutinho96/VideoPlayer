@@ -26,15 +26,21 @@ class usersController{
         const {name, email, newPassword, oldPassword} = req.body
 
         const emailExist = await database("users").where({email}).first()
-        const password = await database("users").where({password: oldPassword})
+        const user = await database("users").where({id}).first()
 
         if(!name) throw new appError("Digite o nome!")
         if(!email) throw new appError("Digite seu email")
-        if(emailExist) throw new appError("Email já cadastrado!")
-        if(!password) throw new appError("Digite sua nova senha!")
+        if(emailExist && user.email != email) throw new appError("Email já cadastrado!")
+        if(!newPassword) throw new appError("Digite sua nova senha!")
         if(!oldPassword) throw new appError("Digite sua senha antiga!")
 
-        const passwordCheck = compare(newPassword,)
+        const passwordCheck = await compare(oldPassword, user.password)
+        if(!passwordCheck) throw new appError("Senha antiga incorreta!")
+
+        const password = await hash(newPassword, 8)
+
+        await database("users").where({id}).update({name, email, password})
+        res.json()
     }
 
     async delete(req, res){
